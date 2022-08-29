@@ -1,5 +1,6 @@
 FROM node:current-alpine
-
+ 
+EXPOSE 3000
 RUN mkdir -p /app
 WORKDIR /app
 
