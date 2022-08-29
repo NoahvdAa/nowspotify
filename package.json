@@ -1,0 +1,14 @@
+{
+  "name": "nowspotify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "qs": "^6.11.0"
+  },
+  "scripts": {
+    "start": "node ."
+  }
+}
