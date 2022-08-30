@@ -8,6 +8,7 @@ const app = express();
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const SPOTIFY_OAUTH_AUTH = process.env.SPOTIFY_OAUTH_AUTH;
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 5000;
+const STRIP_CONTEXT = process.env.STRIP_CONTEXT !== undefined ? process.env.STRIP_CONTEXT : false;
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));
@@ -57,6 +58,8 @@ const fetchData = async () => {
         });
         isFetchingData = false;
         dataLastUpdated = Date.now();
+
+        if (STRIP_CONTEXT) delete response.data.context;
 
         cachedData = response.data;
         wsServer.clients.forEach((ws) => ws.send(JSON.stringify(response.data)));
