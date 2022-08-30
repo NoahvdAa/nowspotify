@@ -1,10 +1,12 @@
 const axios = require('axios').default;
+const cors = require('cors');
 const express = require('express');
 const qs = require('qs');
 const ws = require('ws');
 
 const app = express();
 
+const CORS_ALLOWED_HOSTS = JSON.parse(process.env.CORS_ALLOWED_HOSTS || '"any"');
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const SPOTIFY_OAUTH_AUTH = process.env.SPOTIFY_OAUTH_AUTH;
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 5000;
@@ -19,7 +21,12 @@ let cachedData;
 let isFetchingData = false;
 let accessToken;
 
-app.get('/data', async (req, res) => {
+app.get('/data', cors({
+    origin: (origin, callback) => {
+        if (CORS_ALLOWED_HOSTS === 'any' || CORS_ALLOWED_HOSTS.includes(origin)) return callback(null, true);
+        callback(new Error('Not allowed by CORS'));
+    }
+}), async (req, res) => {
     await fetchDataIfNecessary();
     res.json(cachedData);
 });
