@@ -89,6 +89,7 @@ const authenticate = async () => {
         accessToken = response.data.access_token;
         setTimeout(async () => await authenticate(), (response.data.expires_in * 1000) - 15000); // Refresh in time
     } catch (e) {
+        setTimeout(async () => await authenticate(), 5000);
         return console.error('Got error response from Spotify when authenticating:', e);
     }
 };
